@@ -13,6 +13,16 @@ class BookController {
     var books: [Book] = []
     
     
+    var readBooks: [Book] {
+        let hasBeenRead = books.filter {$0.hasBeenRead == true}
+        return hasBeenRead
+    }
+    
+    var unreadBooks: [Book] {
+        let hasNotBeenRead = books.filter {$0.hasBeenRead == false}   //trailing closure syntax  you can also use a func as an argument of higher order functions - sorted, filter, map, reduce - this is calle callbacks
+        return hasNotBeenRead
+    }
+    
     
     init() {}
     
