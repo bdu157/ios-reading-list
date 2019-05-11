@@ -24,7 +24,7 @@ class BookController {
     }
     
     
-    init() {}
+    init() {loadFromPersistentStore()}
     
     //CRUD - Create, Read, Update, Delete
     func createBooks(title: String, reasonToRead: String) {
@@ -41,8 +41,7 @@ class BookController {
     
     func updateHasBeenRead(for book:Book) {
         guard let index = books.index(of: book) else {return}
-            var hasBeenRead = books[index].hasBeenRead
-            hasBeenRead = !hasBeenRead
+            books[index].hasBeenRead = !books[index].hasBeenRead
             saveToPersistentStore()
     }
 
@@ -68,7 +67,7 @@ class BookController {
         guard let url = readingListURL else {return}
     do {
         let encoder = PropertyListEncoder()
-        let booksData = try encoder.encode(url)
+        let booksData = try encoder.encode(books)
         try booksData.write(to: url)
     } catch {
         NSLog("error saving books data: \(error)")

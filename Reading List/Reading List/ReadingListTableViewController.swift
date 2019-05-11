@@ -10,31 +10,43 @@ import UIKit
 
 class ReadingListTableViewController: UITableViewController, BookTableViewCellDelegate {
     
-
-    
     let bookController = BookController()
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+            self.tableView.reloadData()
+    }
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
         
         return 2
     }
-    
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+/*
         if section == 0 {
             return "Read Books"
         } else {
             return "Unread Books"
         }
+*/
+//correct way to avoid showing section titles when there is no input of book
+        if section == 0 {
+            if bookController.readBooks.count == 0 {
+                return nil
+            } else {
+                return "Read Books"
+            }
+        } else {
+            if bookController.unreadBooks.count == 0 {
+                return nil
+            } else {
+                return "UnRead Books"
+            }
+        }
     }
-
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             let readBooks = bookController.readBooks
@@ -44,9 +56,17 @@ class ReadingListTableViewController: UITableViewController, BookTableViewCellDe
             return unreadBooks.count
         }
         return bookController.books.count
+        /* alernative way
+        switch section {
+        case 0:
+            return bookController.readBooks.count
+        case 1:
+            return bookController.unreadBooks.count
+        default:
+            return bookController.unreadBooks.count
+        }
+        */
     }
-
-
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         guard let bookTableViewCell = cell as? BookTableViewCell else {return cell}
@@ -55,16 +75,13 @@ class ReadingListTableViewController: UITableViewController, BookTableViewCellDe
             bookTableViewCell.delegate = self
             return cell
     }
-
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         let book = bookController.books[indexPath.row]
         bookController.deleteBooks(book: book)
         tableView.deleteRows(at: [indexPath], with: .fade)
     }
-
     // MARK: - Navigation
-
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ToDetailVCFromAdd" {
@@ -72,19 +89,18 @@ class ReadingListTableViewController: UITableViewController, BookTableViewCellDe
                 destVC.bookController = bookController
         } else if segue.identifier == "ToDetailVCFromCell" {
             guard let destVC = segue.destination as? BookDetailViewController,
-                let selectedRow = tableView.indexPathForSelectedRow else {return}
-            let book = bookFor(indexPath: selectedRow)
+                let indexPath = tableView.indexPathForSelectedRow else {return}
+            let book = bookController.books[indexPath.row]
             destVC.bookController = bookController
             destVC.book = book
         }
     }
-    
     func toggleHasbeenRead(for cell: BookTableViewCell) {
-        guard let updateCell = cell.book else {return}
-        bookController.updateHasBeenRead(for: updateCell)
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let book = bookFor(indexPath: indexPath)
+        bookController.updateHasBeenRead(for: book)
         self.tableView.reloadData()
     }
-
     private func bookFor(indexPath: IndexPath) -> Book {
         if indexPath.section == 0 {
             return bookController.readBooks[indexPath.row]

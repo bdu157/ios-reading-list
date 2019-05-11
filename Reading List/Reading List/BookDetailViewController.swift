@@ -4,7 +4,7 @@
 //
 //  Created by Dongwoo Pae on 5/10/19.
 //  Copyright © 2019 Lambda School. All rights reserved.
-//
+
 
 import UIKit
 
@@ -21,10 +21,8 @@ class BookDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        updateViews()
     }
-    
-
     /*
     // MARK: - Navigation
 
@@ -45,7 +43,11 @@ class BookDetailViewController: UIViewController {
         }
         navigationController?.popViewController(animated: true)
     }
+//make sure you call this updateViews
     
+/*
+ multiple ways to call this.
+ */
     func updateViews() {
         guard let book = book else {return}
             let bookTitle = book.title
