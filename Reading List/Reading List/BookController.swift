@@ -19,7 +19,7 @@ class BookController {
     }
     
     var unreadBooks: [Book] {
-        let hasNotBeenRead = books.filter {$0.hasBeenRead == false}   //trailing closure syntax  you can also use a func as an argument of higher order functions - sorted, filter, map, reduce - this is calle callbacks
+        let hasNotBeenRead = books.filter {$0.hasBeenRead == false}   //trailing closure syntax  you can also use a func as an argument of higher order functions - sorted, filter, map, reduce - this is called callbacks
         return hasNotBeenRead
     }
     
