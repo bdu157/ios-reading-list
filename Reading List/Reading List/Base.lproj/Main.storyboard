@@ -119,6 +119,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="bookDetailVCTitle" destination="dGO-3L-U9p" id="REe-xe-oQU"/>
                         <outlet property="bookTitleTextField" destination="T8s-uj-Cc7" id="O1f-Si-BpE"/>
                         <outlet property="reasontoReadTextview" destination="n1R-tL-iyG" id="HHs-8E-IGf"/>
                     </connections>

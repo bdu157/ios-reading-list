@@ -10,15 +10,18 @@ import UIKit
 
 class BookDetailViewController: UIViewController {
 
+    var bookController: BookController?
+    var book: Book?
     
     @IBOutlet weak var bookTitleTextField: UITextField!
     
     @IBOutlet weak var reasontoReadTextview: UITextView!
     
+    @IBOutlet weak var bookDetailVCTitle: UINavigationItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+    
     }
     
 
@@ -32,7 +35,24 @@ class BookDetailViewController: UIViewController {
     }
     */
     @IBAction func saveButtonTapped(_ sender: Any) {
-        
+        guard let titleInput = bookTitleTextField.text,
+            let reasonToReadInput = reasontoReadTextview.text else {return}
+        if book == nil {
+            bookController?.createBooks(title: titleInput, reasonToRead: reasonToReadInput)
+        } else {
+            guard let book = book else {return}
+            bookController?.editbBooks(for: book, updateTitleto: titleInput, updateReasonToReadto: reasonToReadInput)
+        }
+        navigationController?.popViewController(animated: true)
+    }
+    
+    func updateViews() {
+        guard let book = book else {return}
+            let bookTitle = book.title
+            let reasonToRead = book.reasonToRead
+            bookTitleTextField.text = bookTitle
+            reasontoReadTextview.text = reasonToRead
+            bookDetailVCTitle.title = bookTitle
     }
     
 }

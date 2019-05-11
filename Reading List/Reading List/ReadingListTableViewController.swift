@@ -50,7 +50,7 @@ class ReadingListTableViewController: UITableViewController, BookTableViewCellDe
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         guard let bookTableViewCell = cell as? BookTableViewCell else {return cell}
-            let book = bookController.books[indexPath.row]
+            let book = bookFor(indexPath: indexPath)     //this will determine which section this cell should be reused
             bookTableViewCell.book = book
             bookTableViewCell.delegate = self
             return cell
