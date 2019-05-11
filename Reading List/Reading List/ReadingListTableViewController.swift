@@ -8,7 +8,8 @@
 
 import UIKit
 
-class ReadingListTableViewController: UITableViewController {
+class ReadingListTableViewController: UITableViewController, BookTableViewCellDelegate {
+    
 
     
     let bookController = BookController()
@@ -27,7 +28,11 @@ class ReadingListTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "hello"
+        if section == 0 {
+            return "Read Books"
+        } else {
+            return "Unread Books"
+        }
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -44,33 +49,19 @@ class ReadingListTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-
-        
-
-        return cell
+        guard let bookTableViewCell = cell as? BookTableViewCell else {return cell}
+            let book = bookController.books[indexPath.row]
+            bookTableViewCell.book = book
+            bookTableViewCell.delegate = self
+            return cell
     }
 
-
-    /*
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+        let book = bookController.books[indexPath.row]
+        bookController.deleteBooks(book: book)
+        tableView.deleteRows(at: [indexPath], with: .fade)
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-
 
     // MARK: - Navigation
 
@@ -78,5 +69,18 @@ class ReadingListTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
        
     }
+    
+    func toggleHasbeenRead(for cell: BookTableViewCell) {
+        guard let updateCell = cell.book else {return}
+        bookController.updateHasBeenRead(for: updateCell)
+        self.tableView.reloadData()
+    }
 
+    private func bookFor(indexPath: IndexPath) -> Book {
+        if indexPath.section == 0 {
+            return bookController.readBooks[indexPath.row]
+        } else {
+            return bookController.unreadBooks[indexPath.row]
+        }
+    }
 }
