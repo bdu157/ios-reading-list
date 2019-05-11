@@ -16,8 +16,35 @@ class BookController {
     
     init() {}
     
+    //CRUD - Create, Read, Update, Delete
+    func createBooks(title: String, reasonToRead: String) {
+        let input = Book.init(title: title, reasonToRead: reasonToRead)
+        books.append(input)
+        saveToPersistentStore()
+    }
+    
+    func deleteBooks(book: Book) {
+        guard let index = books.index(of: book) else {return}
+        books.remove(at: index)
+        saveToPersistentStore()
+    }
+    
+    func updateHasBeenRead(for book:Book) {
+        guard let index = books.index(of: book) else {return}
+            var hasBeenRead = books[index].hasBeenRead
+            hasBeenRead = !hasBeenRead
+            saveToPersistentStore()
+    }
+
+    func editbBooks(for book: Book, updateTitleto title: String, updateReasonToReadto reasonToRead: String) {
+        guard let index = books.index(of: book) else {return}
+            books[index].title = title
+            books[index].reasonToRead = reasonToRead
+            saveToPersistentStore()
+    }
     
     
+    //creating a file(location)
     
     private var readingListURL: URL? {
         let fileManager = FileManager.default
@@ -26,6 +53,7 @@ class BookController {
     }
     
     
+    //save struct to a file(location) created above
     func saveToPersistentStore() {
         guard let url = readingListURL else {return}
     do {
@@ -37,6 +65,7 @@ class BookController {
         }
     }
 
+    //load endocded struct in the file(location) as encoded struct back to struct
     func loadFromPersistentStore() {
             let fileManager = FileManager.default
         guard let url = readingListURL,
