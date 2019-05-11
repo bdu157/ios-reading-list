@@ -77,7 +77,7 @@ class ReadingListTableViewController: UITableViewController, BookTableViewCellDe
     }
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        let book = bookController.books[indexPath.row]
+        let book = bookFor(indexPath: indexPath)
         bookController.deleteBooks(book: book)
         tableView.deleteRows(at: [indexPath], with: .fade)
     }
@@ -90,7 +90,7 @@ class ReadingListTableViewController: UITableViewController, BookTableViewCellDe
         } else if segue.identifier == "ToDetailVCFromCell" {
             guard let destVC = segue.destination as? BookDetailViewController,
                 let indexPath = tableView.indexPathForSelectedRow else {return}
-            let book = bookController.books[indexPath.row]
+            let book = bookFor(indexPath: indexPath)
             destVC.bookController = bookController
             destVC.book = book
         }
