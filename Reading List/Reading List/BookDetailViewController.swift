@@ -37,7 +37,7 @@ class BookDetailViewController: UIViewController {
     @IBAction func saveButtonTapped(_ sender: Any) {
         guard let titleInput = bookTitleTextField.text,
             let reasonToReadInput = reasontoReadTextview.text else {return}
-        if book == nil {
+        if book == nil {    //if let book = book here would not work because you will not need to use book constant inside of closure
             bookController?.createBooks(title: titleInput, reasonToRead: reasonToReadInput)
         } else {
             guard let book = book else {return}

@@ -67,7 +67,16 @@ class ReadingListTableViewController: UITableViewController, BookTableViewCellDe
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-       
+        if segue.identifier == "ToDetailVCFromAdd" {
+            guard let destVC = segue.destination as? BookDetailViewController else {return}
+                destVC.bookController = bookController
+        } else if segue.identifier == "ToDetailVCFromCell" {
+            guard let destVC = segue.destination as? BookDetailViewController,
+                let selectedRow = tableView.indexPathForSelectedRow else {return}
+            let book = bookFor(indexPath: selectedRow)
+            destVC.bookController = bookController
+            destVC.book = book
+        }
     }
     
     func toggleHasbeenRead(for cell: BookTableViewCell) {
