@@ -90,7 +90,7 @@ class ReadingListTableViewController: UITableViewController, BookTableViewCellDe
         } else if segue.identifier == "ToDetailVCFromCell" {
             guard let destVC = segue.destination as? BookDetailViewController,
                 let indexPath = tableView.indexPathForSelectedRow else {return}
-            let book = bookFor(indexPath: indexPath)
+            let book = bookController.books[indexPath.row]
             destVC.bookController = bookController
             destVC.book = book
         }
@@ -98,10 +98,10 @@ class ReadingListTableViewController: UITableViewController, BookTableViewCellDe
     func toggleHasbeenRead(for cell: BookTableViewCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         let book = bookFor(indexPath: indexPath)
-        bookController.updateHasBeenRead(for: book)
-        self.tableView.reloadData()
+        bookController.updateHasBeenRead(for: book)    //through this, hasBeenRead bool gets changed
+        self.tableView.reloadData() // through this, cellForRowAt gets triggered and this will reuse cell and show under either section 0 or section 1 depending on boolean value of hasBeenRead
     }
-    private func bookFor(indexPath: IndexPath) -> Book {
+    private func bookFor(indexPath: IndexPath) -> Book {   //if the cell (struct) that you are trying to do with things is within section 0 then return a struct that has hasBeenRead as true
         if indexPath.section == 0 {
             return bookController.readBooks[indexPath.row]
         } else {

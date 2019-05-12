@@ -144,13 +144,13 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="22T-t3-QRY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="388" y="85"/>
+            <point key="canvasLocation" x="418" y="85"/>
         </scene>
     </scenes>
     <resources>
         <image name="checked" width="37.5" height="37.5"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="N2s-Pk-BuH"/>
+        <segue reference="tTV-HM-umB"/>
     </inferredMetricsTieBreakers>
 </document>

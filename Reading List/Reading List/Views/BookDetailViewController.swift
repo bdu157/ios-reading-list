@@ -36,12 +36,15 @@ class BookDetailViewController: UIViewController {
         guard let titleInput = bookTitleTextField.text,
             let reasonToReadInput = reasontoReadTextview.text else {return}
         if book == nil {    //if let book = book here would not work because you will not need to use book constant inside of closure
+            if titleInput != "" && reasonToReadInput != ""{
             bookController?.createBooks(title: titleInput, reasonToRead: reasonToReadInput)
+            navigationController?.popViewController(animated: true)
+            }
         } else {
             guard let book = book else {return}
             bookController?.editbBooks(for: book, updateTitleto: titleInput, updateReasonToReadto: reasonToReadInput)
+            navigationController?.popViewController(animated: true)
         }
-        navigationController?.popViewController(animated: true)
     }
 //make sure you call this updateViews
     
@@ -56,5 +59,4 @@ class BookDetailViewController: UIViewController {
             reasontoReadTextview.text = reasonToRead
             bookDetailVCTitle.title = bookTitle
     }
-    
 }
